@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>DetailContact</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" *ngIf="contact">
+  <ion-fab horizontal="end" vertical="top" slot="fixed">
+    <ion-fab-button >
+      <ion-icon md="caret-back" ios="chevron-back-circle-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="start">
+      <ion-fab-button (click)="appel()">
+        <ion-icon name="call"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button (click)="email()">
+        <ion-icon name="at"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button (click)="sharing()">
+        <ion-icon name="pin"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+  <ion-item>
+    <ion-label>Nom</ion-label>
+    <ion-input type="text" value={{contact.nom}} disabled="true"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Prenom</ion-label>
+    <ion-input type="text" value={{contact.prenom}} disabled="true"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Email</ion-label>
+    <ion-input type="email" value={{contact.email}} disabled="true"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Tel</ion-label>
+    <ion-input type="Tel" value={{contact.tel}} disabled="true"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Adresse</ion-label>
+    <ion-input type="text" value={{contact.adresse}} disabled="true"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Ville</ion-label>
+    <ion-input type="text" value={{contact.ville}} disabled="true"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Service</ion-label>
+    <ion-input type="text" value={{contact.service}} disabled="true"></ion-input>
+  </ion-item>
+  <div class="yourCssClass" *ngIf="this.isButtonsVisible" >
+    <ion-button expand="block" fill="outline" (click)="Modifier()">Modifier</ion-button>
+    <ion-button expand="block" fill="outline" (click)="supprimer()">Supprimer</ion-button>
+    <ion-button expand="block" fill="outline" (click)="partager()">Partager</ion-button>
+  </div>
+</ion-content>

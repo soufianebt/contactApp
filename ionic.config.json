@@ -1,0 +1,10 @@
+{
+  "name": "contactApp",
+  "integrations": {
+    "capacitor": {
+      "enabled": false
+    },
+    "cordova": {}
+  },
+  "type": "angular"
+}

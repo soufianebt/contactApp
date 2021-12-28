@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>AjouterContact</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="ajouterContactForm" (ngSubmit)="nouveauContact()">
+    <ion-item>
+      <ion-label>Nom</ion-label>
+      <ion-input type="text" formControlName='nom'></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Prenom</ion-label>
+      <ion-input type="text" formControlName='prenom'></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Email</ion-label>
+      <ion-input type="email" formControlName='email'></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Tel</ion-label>
+      <ion-input type="Tel" formControlName='tel'></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Adresse</ion-label>
+      <ion-input type="text" formControlName='adresse'></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Ville</ion-label>
+      <ion-input type="text" formControlName='ville'></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label> Service</ion-label>
+      <ion-select placeholder="Choisir un servicee" formControlName='service'>
+        <ion-select-option value="coiffeur">coiffeur</ion-select-option>
+        <ion-select-option value="fleuriste">fleuriste</ion-select-option>
+        <ion-select-option value="maçon">maçon</ion-select-option>
+        <ion-select-option value="peintre">peintre</ion-select-option>
+        <ion-select-option value="plombier">plombier</ion-select-option>
+        <ion-select-option value="tailleur">tailleur</ion-select-option>
+        <ion-select-option value="tapissier">tapissier</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-button expand="block" fill="outline" type="submit">Envoyer</ion-button>
+  </form>
+
+</ion-content>
