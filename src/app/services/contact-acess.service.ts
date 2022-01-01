@@ -41,5 +41,10 @@ export class ContactAcessService {
   delateContactPersonel(id1: string, id2: string ){
     return this.firestore.doc('/Comptes/'+id1).collection('/Contacts').doc(id2).delete();
   }
+
+  setPersonalContact(id1: string, id2: string, contact: Contact) {
+    this.firestore.doc('/Comptes/'+id1).collection('/Contacts').doc(id2).delete();
+    return this.firestore.doc('/Comptes/'+id1).collection('/Contacts').doc(contact.email).set(contact);
+  }
 }
 

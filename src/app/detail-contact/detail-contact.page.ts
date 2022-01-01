@@ -9,6 +9,7 @@ import { EmailComposer } from '@ionic-native/email-composer/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { SMS } from '@ionic-native/sms/ngx';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-detail-contact',
@@ -20,6 +21,8 @@ export class DetailContactPage implements OnInit {
   from: string;
   contact: Contact;
   isButtonsVisible = false;
+  modified: boolean;
+  inscriptionForm: FormGroup;
 
   constructor(private contactservice: ContactAcessService,
               private fireauth: ContactAuthService,
@@ -31,27 +34,33 @@ export class DetailContactPage implements OnInit {
               private geolocation: Geolocation,
               private router: Router,
               private sms: SMS,
-              private socialSharing: SocialSharing) {
-    this.route.queryParams.subscribe(params => {
-      this.emailContact = params.emailContact;
-      this.from = params.from;
-      if (this.from === 'liste-contacts-rec') {
-        this.isButtonsVisible = false;
-      } else {
-        this.isButtonsVisible = true;
-      }
+              private socialSharing: SocialSharing,
+              private formBuilder: FormBuilder) {
+            this.route.queryParams.subscribe(params => {
+              this.emailContact = params.emailContact;
+              this.from = params.from;
+              if (this.from === 'liste-contacts-rec') {
+                this.isButtonsVisible = false;
+              } else {
+                this.isButtonsVisible = true;
+              }
     });
+
+
   }
 
-  ngOnInit() {
-    if (this.from === 'liste-contacts-rec') {
-      this.recommande();
-    } else {
-      this.personel();
-    }
-  }
+     ngOnInit() {
+       if (this.from === 'liste-contacts-rec') {
+         this.recommande();
+       } else {
+         this.personel();
+         this.modified = true;
+       }
+   }
 
-  personel() {
+
+
+   personel() {
     this.fireauth.userDetails().subscribe(res => {
       console.log('res', res);
       if (res !== null) {
@@ -86,6 +95,9 @@ export class DetailContactPage implements OnInit {
     });
   }
 
+  modifier(){
+    this.modified = false;
+  }
   supprimer() {
     this.fireauth.userDetails().subscribe(res => {
       console.log('res', res);
@@ -138,6 +150,7 @@ export class DetailContactPage implements OnInit {
   }
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
+
   SMS() {
     this.sms.send(this.contact.tel, '[Votre message ici!!!]');
   }
@@ -149,5 +162,22 @@ export class DetailContactPage implements OnInit {
     }).catch(() => {
 // Error!
     });
+  }
+
+  save(){
+    this.fireauth.userDetails().subscribe(res => {
+      console.log('res', res);
+      if (res !== null) {
+        // eslint-disable-next-line @typescript-eslint/no-shadow
+        this.contactservice.setPersonalContact(res.email, this.emailContact, this.contact);
+
+        this.navCtrl.navigateForward('/liste-contacts');
+      } else {
+        this.navCtrl.navigateForward('/authentification');
+      }
+    }, err => {
+      console.log('err', err);
+    });
+    console.log(this.contact);
   }
 }

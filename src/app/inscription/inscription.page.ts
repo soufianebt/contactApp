@@ -18,7 +18,7 @@ export class InscriptionPage implements OnInit {
               private  firestore: ContactAcessService,
               private formBuilder: FormBuilder,
               private naveCntrl: NavController) {
-    console.log('inscription form init');
+               console.log('inscription form init');
               this.inscriptionForm = this.formBuilder.group({
                 nom: [''],
                 prenom: [''],
