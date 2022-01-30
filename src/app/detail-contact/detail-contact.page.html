@@ -3,6 +3,9 @@
     <ion-title>DetailContact</ion-title>
   </ion-toolbar>
 </ion-header>
+<ion-button fill="clear" size="large" (click)= 'ajouterFavori()'>
+  <ion-icon name={{start_icon_type}} ></ion-icon>
+</ion-button>
 
 <ion-content class="ion-padding" *ngIf="contact">
   <form (ngSubmit)="save()">

@@ -38,6 +38,10 @@ const routes: Routes = [
   {
     path: 'recommended-contacts',
     loadChildren: () => import('./recommended-contacts/recommended-contacts.module').then( m => m.RecommendedContactsPageModule)
+  },
+  {
+    path: 'favorite',
+    loadChildren: () => import('./favorite/favorite.module').then( m => m.FavoritePageModule)
   }
 ];
 

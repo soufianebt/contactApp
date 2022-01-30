@@ -20,6 +20,8 @@
     "@angular/platform-browser": "~13.0.0",
     "@angular/platform-browser-dynamic": "~13.0.0",
     "@angular/router": "~13.0.0",
+    "@awesome-cordova-plugins/call-number": "^5.37.3",
+    "@awesome-cordova-plugins/sqlite": "^5.38.0",
     "@capacitor/app": "1.0.7",
     "@capacitor/core": "3.3.3",
     "@capacitor/haptics": "1.1.3",
@@ -31,6 +33,7 @@
     "@ionic-native/geolocation": "^5.36.0",
     "@ionic-native/sms": "^5.36.0",
     "@ionic-native/social-sharing": "^5.36.0",
+    "@ionic-native/sqlite": "^5.36.0",
     "@ionic/angular": "^6.0.0",
     "cordova": "^11.0.0",
     "cordova-android": "10.1.1",
@@ -57,6 +60,7 @@
     "@typescript-eslint/eslint-plugin": "5.3.0",
     "@typescript-eslint/parser": "5.3.0",
     "call-number": "^1.0.1",
+    "cordova-browser": "^6.0.0",
     "cordova-plugin-androidx": "^3.0.0",
     "cordova-plugin-androidx-adapter": "^1.1.3",
     "cordova-plugin-device": "2.0.2",
@@ -69,6 +73,8 @@
     "cordova-plugin-statusbar": "2.4.2",
     "cordova-plugin-x-socialsharing": "^6.0.3",
     "cordova-sms-plugin": "^1.0.1",
+    "cordova-sqlite-storage": "^6.0.0",
+    "es6-promise-plugin": "^4.2.2",
     "eslint": "^7.6.0",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jsdoc": "30.7.6",
@@ -91,7 +97,9 @@
       "cordova-plugin-firebase": {},
       "mx.ferreyra.callnumber": {},
       "cordova-plugin-email-composer": {},
-      "cordova-plugin-geolocation": {},
+      "cordova-plugin-geolocation": {
+        "GPS_REQUIRED": "true"
+      },
       "cordova-sms-plugin": {},
       "cordova-plugin-x-socialsharing": {},
       "cordova-plugin-androidx": {},
@@ -100,7 +108,11 @@
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-ionic-webview": {},
-      "cordova-plugin-ionic-keyboard": {}
-    }
+      "cordova-plugin-ionic-keyboard": {},
+      "cordova-sqlite-storage": {}
+    },
+    "platforms": [
+      "browser"
+    ]
   }
 }

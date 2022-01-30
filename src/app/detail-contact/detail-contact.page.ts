@@ -4,12 +4,13 @@ import {ContactAcessService} from '../services/contact-acess.service';
 import {ContactAuthService} from '../services/contact-auth.service';
 import {NavController} from '@ionic/angular';
 import {ActivatedRoute, Router} from '@angular/router';
-import { CallNumber } from '@ionic-native/call-number/ngx';
+import {CallNumber} from '@ionic-native/call-number/ngx';
 import { EmailComposer } from '@ionic-native/email-composer/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { SMS } from '@ionic-native/sms/ngx';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite/ngx';
 
 @Component({
   selector: 'app-detail-contact',
@@ -23,6 +24,9 @@ export class DetailContactPage implements OnInit {
   isButtonsVisible = false;
   modified: boolean;
   inscriptionForm: FormGroup;
+  LocationUrl: string;
+  start_icon_type = 'star-outline';
+  db: SQLiteObject;
 
   constructor(private contactservice: ContactAcessService,
               private fireauth: ContactAuthService,
@@ -35,7 +39,8 @@ export class DetailContactPage implements OnInit {
               private router: Router,
               private sms: SMS,
               private socialSharing: SocialSharing,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private sqlite: SQLite) {
             this.route.queryParams.subscribe(params => {
               this.emailContact = params.emailContact;
               this.from = params.from;
@@ -49,24 +54,42 @@ export class DetailContactPage implements OnInit {
 
   }
 
-     ngOnInit() {
+  ngOnInit() {
        if (this.from === 'liste-contacts-rec') {
          this.recommande();
-       } else {
+       } else if(this.from === 'liste-contacts'){
          this.personel();
          this.modified = true;
+       }else if(this.from === 'favoris'){
+         this.favori();
        }
    }
 
-
-
-   personel() {
+  personel() {
     this.fireauth.userDetails().subscribe(res => {
       console.log('res', res);
       if (res !== null) {
         // eslint-disable-next-line @typescript-eslint/no-shadow
         this.contactservice.getPersonalContact(res.email, this.emailContact).subscribe(res => {
           this.contact = res as Contact;
+          //verifie if the contact in the liste of favorites with an SQL Request
+          this.sqlite.create({
+            name: 'data.db',
+            location: 'default'
+          })
+            .then((db: SQLiteObject) => {
+              this.db = db;
+              this.db.executeSql('select * from contact where tel="'+this.contact.tel+'"',[])
+                .then((data) => {
+                  if(data.rows.length > 0){
+                    this.start_icon_type= 'star';
+                  }else {
+                    this.start_icon_type = 'star-outline';
+                  }
+                })
+                .catch(e => console.log(e));
+            })
+            .catch(e => console.log(e));
           console.log(res);
         });
       } else {
@@ -85,6 +108,24 @@ export class DetailContactPage implements OnInit {
           // eslint-disable-next-line @typescript-eslint/no-shadow
           (res => {
             this.contact = res as Contact;
+            //verifie if the contact in the liste of favorites with an SQL Request
+            this.sqlite.create({
+              name: 'data.db',
+              location: 'default'
+            })
+              .then((db: SQLiteObject) => {
+                this.db = db;
+                this.db.executeSql('select * from contact where tel="'+this.contact.tel+'"',[])
+                  .then((data) => {
+                    if(data.rows.length > 0){
+                      this.start_icon_type= 'star';
+                    }else {
+                      this.start_icon_type = 'star-outline';
+                    }
+                  })
+                  .catch(e => console.log(e));
+              })
+              .catch(e => console.log(e));
             console.log(res);
           });
       } else {
@@ -134,30 +175,34 @@ export class DetailContactPage implements OnInit {
 
   email() {
     const email = {
-      to: this.contact.email, subject: '[Rediger votre objet]]’, body: [Rediger votre message]',
+      to: this.contact.email, subject: 'Demmand de service',
+      body: 'How are you? Nice greetings from Rabat' ,
       isHtml: true
     };
     this.emailComposer.open(email);
   }
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  GPS(): string {
-    this.geolocation.getCurrentPosition().then((resp) => '(' + resp.coords.latitude + ',' + resp.coords.longitude + ')').catch((error) => {
+  GPS(): string{
+    this.geolocation.getCurrentPosition().then((resp) => {
+      this.LocationUrl =  resp.coords.latitude.toString() + ',' + resp.coords.longitude.toString();
+      //
+      console.log(this.LocationUrl);
+    }).catch((error) => {
       console.log('Error getting location', error);
-      return ' ';
     });
-    return '';
+    console.log(this.LocationUrl);
+  return 'https://www.google.com/maps/@'+this.LocationUrl;
   }
-
   // eslint-disable-next-line @typescript-eslint/naming-convention
 
-  SMS() {
+  setSMS() {
     this.sms.send(this.contact.tel, '[Votre message ici!!!]');
   }
 
   sharing() {
-    this.socialSharing.shareViaWhatsAppToPhone(this.contact.tel,
-      this.GPS(), null).then(() => {
+    this.socialSharing.shareViaWhatsAppToReceiver(this.contact.tel,
+      'Hi You can find me \n' + this.GPS(), null).then(() => {
 // Success!
     }).catch(() => {
 // Error!
@@ -180,4 +225,57 @@ export class DetailContactPage implements OnInit {
     });
     console.log(this.contact);
   }
+
+  ajouterFavori() {
+  if(this.start_icon_type == 'start'){
+    this.start_icon_type = 'star-outline';
+    this.sqlite.create({
+      name: 'data.db',
+      location: 'default'
+    })
+      .then((db: SQLiteObject) => {
+        this.db = db;
+        this.db.executeSql('delete from contact where tel="'+this.contact.tel+'"',[])
+          .then(() => console.log('Executed SQL delete'))
+          .catch(e => console.log(e));
+      })
+      .catch(e => console.log(e));
+  }else {
+    this.start_icon_type = 'star';
+    this.sqlite.create({
+      name: 'data.db',
+      location: 'default'
+    })
+      .then((db: SQLiteObject) => {
+        this.db = db;
+        this.db.executeSql('insert into contact(nom, prenom, tel, email, adresse, ville, service) values("'
+          +this.contact.nom+'","'
+          +this.contact.prenom+'","'
+          +this.contact.tel+'","'
+          +this.contact.email+'","'
+          +this.contact.adresse+'","'
+          +this.contact.ville+'","'
+          +this.contact.service+'")',[])
+          .then(() => console.log('Executed SQL insert'))
+          .catch(e => console.log(e));
+      })
+      .catch(e => console.log(e));
+  }
+  }
+
+  favori(){
+    this.sqlite.create({
+      name: 'data.db',
+      location: 'default'
+    })
+      .then((db: SQLiteObject) => {
+        this.db = db;
+        this.db.executeSql('select * from contact where email="'+this.emailContact+'"',[])
+        .then((data) => {this.contact = data.row.item(0);})
+          .catch(e => console.log(e));
+      })
+      .catch(e => console.log(e));
+      this.start_icon_type= 'star';
+  }
+
 }

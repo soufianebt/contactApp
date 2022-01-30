@@ -8,9 +8,10 @@
 </ion-header>
 <ion-content>
   <ion-list>
+    <ion-searchbar showCancelButton="always" ionChange="search()"></ion-searchbar>
     <ion-item *ngFor="let item of contacts" (click)="detailsContact(item.email)">
       <ion-thumbnail slot="start">
-        <ion-img [src]="item.src"></ion-img>
+        <ion-img src="../../../../assets/img.JPG"></ion-img>
       </ion-thumbnail>
       <ion-label>{{item.nom}} {{item.prenom}}</ion-label>
       <ion-label><br>{{item.service}}</ion-label>

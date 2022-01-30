@@ -18,7 +18,7 @@ import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {SMS} from '@ionic-native/sms/ngx';
 import {SocialSharing} from '@ionic-native/social-sharing/ngx';
 
-
+import {SQLite} from '@ionic-native/sqlite/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -33,13 +33,15 @@ import {SocialSharing} from '@ionic-native/social-sharing/ngx';
     AngularFireStorageModule,
     AngularFirestoreModule,
     FormsModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     CallNumber,
     EmailComposer,
     Geolocation,
     SMS,
+    SQLite,
+
     SocialSharing,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

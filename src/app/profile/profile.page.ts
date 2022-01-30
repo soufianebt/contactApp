@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {ContactAcessService} from '../services/contact-acess.service';
 import {Compte} from '../models/Compte';
-import {ContactAuthService} from "../services/contact-auth.service";
-import {NavController} from "@ionic/angular";
+import {ContactAuthService} from '../services/contact-auth.service';
+import {NavController} from '@ionic/angular';
 
 @Component({
   selector: 'app-profile',
