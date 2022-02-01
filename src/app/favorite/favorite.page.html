@@ -8,7 +8,7 @@
 </ion-header>
 <ion-content>
   <ion-list>
-    <ion-searchbar showCancelButton="always" ionChange="search()"></ion-searchbar>
+    <ion-searchbar showCancelButton="always" (ionInput)="searchContact($event)"></ion-searchbar>
     <ion-item *ngFor="let item of contacts" (click)="detailsContact(item.email)">
       <ion-thumbnail slot="start">
         <ion-img src="{{getImage(item.imageUrl)}}"></ion-img>

@@ -12,6 +12,7 @@ import {ContactAuthService} from '../services/contact-auth.service';
 })
 export class ListeContactsPage implements OnInit {
   contacts: Contact[];
+  contactSearchResult: Contact[];
   email: string;
   localImage= '../../../../assets/profile.png';
 
@@ -63,6 +64,19 @@ export class ListeContactsPage implements OnInit {
   }
   ajouterContact(){
     this.navCtrl.navigateRoot('/ajouter-contact');
+  }
+
+  searchContact(ev: any){
+    const val = ev.target.value;
+    if(val && val.trim() != ''){
+      this.contactSearchResult = this.contacts.filter((item)=>(item.nom.toLowerCase().indexOf(val.toLowerCase())>-1));
+
+      this.contacts = this.contactSearchResult;
+    }else{
+      this.loadContact();
+    }
+
+
   }
 
 }

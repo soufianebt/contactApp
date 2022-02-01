@@ -3,7 +3,7 @@ import {Contact} from '../models/Contact';
 import {ContactAcessService} from '../services/contact-acess.service';
 import {ContactAuthService} from '../services/contact-auth.service';
 import {NavController} from '@ionic/angular';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {CallNumber} from '@ionic-native/call-number/ngx';
 import { EmailComposer } from '@ionic-native/email-composer/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
@@ -304,6 +304,11 @@ export class DetailContactPage implements OnInit {
       })
       .catch(e => console.log(e));
     this.favori();
-    this.navCtrl.navigateForward('/favorite');
+    const navigationExtras: NavigationExtras = {
+      queryParams: {
+        from:'details-contact'
+      }
+    };
+    this.navCtrl.navigateForward('/favorite', navigationExtras);
   }
 }

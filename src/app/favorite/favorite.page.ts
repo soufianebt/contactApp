@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Contact} from '../models/Contact';
 import {MenuController, NavController} from '@ionic/angular';
 
-import {NavigationExtras} from '@angular/router';
+import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {SQLite, SQLiteObject} from '@ionic-native/sqlite/ngx';
 
 @Component({
@@ -13,12 +13,22 @@ import {SQLite, SQLiteObject} from '@ionic-native/sqlite/ngx';
 export class FavoritePage implements OnInit {
   db: SQLiteObject;
   contacts: Contact[] = [];
+  contactSearchResult: Contact[] = [];
   email: string;
+  from: string;
   localImage= '../../../../assets/profile.png';
   constructor(private menuCtrl: MenuController,
               private navCtrl: NavController,
-              private sqlite: SQLite
+              private route: ActivatedRoute,
+              private sqlite: SQLite,
+              private router: Router,
               ) {
+              this.route.queryParams.subscribe(params => {
+                this.from = params.from;
+              });
+              if(this.from == 'details-contact'){
+                this.loadContact();
+              }
               this.menuCtrl.enable(true);
   }
 
@@ -30,6 +40,7 @@ export class FavoritePage implements OnInit {
     return item == null? this.localImage:item;
   }
   loadContact() {
+    this.contacts = [];
     this.sqlite.create({
       name: 'data.db',
       location: 'default'
@@ -65,7 +76,13 @@ export class FavoritePage implements OnInit {
     };
     this.navCtrl.navigateForward('/detail-contact', navigationExtras);
   }
-
-
-
+  searchContact(ev: any){
+    const val = ev.target.value;
+    if(val && val.trim() != ''){
+      this.contactSearchResult = this.contacts.filter((item)=>(item.nom.toLowerCase().indexOf(val.toLowerCase())>-1));
+      this.contacts = this.contactSearchResult;
+    }else{
+      this.loadContact();
+    }
+  }
 }

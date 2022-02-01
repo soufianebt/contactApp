@@ -33,5 +33,18 @@ Our application provides its users with a telephone contact management, where th
 
 ## Details Of Contacts
 ![Details Of Contacts](./SnapShoots/detailContacts.jpg)![Details Of Contacts](./SnapShoots/detailContacts2.jpg)
+
+
 ## Favorite Contacts
 ![Favorite Contact](SnapShoots/Favorite%20Contacts.jpg)
+
+## Recommended Contacts
+![Recommended Contacts](SnapShoots/recommended%20contacts.jpg)
+
+## Contact Option
+![Contact Option](SnapShoots/DetailsExtraOption.jpg)
+
+|                          **CallOption**                    | **Email Option**                                        | **Share Localisation Option**                                 |
+|----------------------------------------------|--------------------------------------------------|-----------------------------------------------------------|
+| ![CallOption](SnapShoots/CallOption.jpg) | ![Email Option](SnapShoots/email%20Option.jpg) | ![Contact Option](SnapShoots/ShareLocalisationOption.jpg) |
+
