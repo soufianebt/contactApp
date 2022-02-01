@@ -23,17 +23,19 @@ export class ProfilePage implements OnInit {
       console.log('res',res);
       if(res !== null){
         this.email = res.email;
+        console.log('user is on', this.email);
+        this.contactsetvice.getCompte(this.email).subscribe(compte => {
+          console.log('Get compte for user ', res);
+          this.compte = compte as Compte;
+        });
+
       }else{
         this.navCtrl.navigateForward('/authentification');
       }
     }, err =>{
       console.log('err', err);
     });
-//
-  console.log( this.contactsetvice.getCompte('soufiane@mail.com').subscribe(res => {
-     this.compte= res as Compte;
-     console.log(res);
-    }));
+
   }
 
 }

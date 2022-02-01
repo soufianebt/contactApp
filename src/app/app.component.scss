@@ -117,3 +117,8 @@ ion-note {
 ion-item.selected {
   --color: var(--ion-color-primary);
 }
+.clientAvatar {
+  border-radius: 30px !important;
+  margin-left: 15px;
+  overflow: hidden;
+}

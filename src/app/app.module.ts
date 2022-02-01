@@ -19,9 +19,10 @@ import {SMS} from '@ionic-native/sms/ngx';
 import {SocialSharing} from '@ionic-native/social-sharing/ngx';
 
 import {SQLite} from '@ionic-native/sqlite/ngx';
+import { FileSizePipe } from './file-size.pipe';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, FileSizePipe],
   entryComponents: [],
   imports: [
     BrowserModule,
@@ -43,7 +44,10 @@ import {SQLite} from '@ionic-native/sqlite/ngx';
     SQLite,
 
     SocialSharing,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+    {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}],
   bootstrap: [AppComponent],
+  exports: [
+    FileSizePipe
+  ]
 })
 export class AppModule {}

@@ -9,6 +9,7 @@
 
 <ion-content class="ion-padding" *ngIf="contact">
   <form (ngSubmit)="save()">
+
   <ion-fab horizontal="end" vertical="top" slot="fixed">
     <ion-fab-button >
       <ion-icon md="caret-back" ios="chevron-back-circle-outline"></ion-icon>
@@ -25,6 +26,9 @@
       </ion-fab-button>
     </ion-fab-list>
   </ion-fab>
+    <ion-item>
+      <ion-img src="{{getImage(contact.imageUrl)}}"></ion-img>
+    </ion-item>
     <ion-item>
       <ion-label>Nom</ion-label>
       <ion-input type="text" value={{contact.nom}} [(ngModel)]="contact.nom" name="nom" disabled="{{modified}}" ></ion-input>
@@ -53,6 +57,7 @@
       <ion-label>Service</ion-label>
       <ion-input type="text" value={{contact.service}} [(ngModel)]="contact.service" name="service" disabled="{{modified}}"></ion-input>
     </ion-item>
+    <ion-button expand="block" fill="outline"  *ngIf="this.deletefav" (click)="deleteFavorite()">delete Favorite</ion-button>
     <div class="yourCssClass" *ngIf="this.isButtonsVisible" >
       <ion-button expand="block" fill="outline" (click)="modifier()">Modifier</ion-button>
       <ion-button expand="block" fill="outline" (click)="supprimer()">Supprimer</ion-button>

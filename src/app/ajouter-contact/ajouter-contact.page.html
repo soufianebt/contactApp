@@ -5,41 +5,49 @@
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="ajouterContactForm" (ngSubmit)="nouveauContact()">
+  <form  (ngSubmit)="nouveauContact()">
+    <ion-item>
+      <ion-label>Contact photo</ion-label>
+      <input type="file" (change)="uploadFile($event)">
+      <div>{{ uploadPercent | async }}</div>
+    </ion-item>
+    <ion-item>
+      <ion-input type="text" [value]="downloadURL | async" hidden  [(ngModel)]="contact.imageUrl" name="imageUrl" disabled="{{true}}" ></ion-input>
+    </ion-item>
     <ion-item>
       <ion-label>Nom</ion-label>
-      <ion-input type="text" formControlName='nom'></ion-input>
+      <ion-input type="text"  [(ngModel)]="contact.nom" name="nom" ></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Prenom</ion-label>
-      <ion-input type="text" formControlName='prenom'></ion-input>
+      <ion-input type="text"  [(ngModel)]="contact.prenom" name="prenom" ></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Email</ion-label>
-      <ion-input type="email" formControlName='email'></ion-input>
+      <ion-input type="email"  [(ngModel)]="contact.email" name="email" ></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Tel</ion-label>
-      <ion-input type="Tel" formControlName='tel'></ion-input>
+      <ion-input type="Tel" [(ngModel)]="contact.tel" name="tel" ></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Adresse</ion-label>
-      <ion-input type="text" formControlName='adresse'></ion-input>
+      <ion-input type="text"  [(ngModel)]="contact.adresse" name="adresse" ></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Ville</ion-label>
-      <ion-input type="text" formControlName='ville'></ion-input>
+      <ion-input type="text"  [(ngModel)]="contact.ville" name="ville"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label> Service</ion-label>
-      <ion-select placeholder="Choisir un servicee" formControlName='service'>
+      <ion-select placeholder="Choisir un servicee" [(ngModel)]="contact.service" name="service">
         <ion-select-option value="coiffeur">coiffeur</ion-select-option>
         <ion-select-option value="fleuriste">fleuriste</ion-select-option>
-        <ion-select-option value="maçon">maçon</ion-select-option>
-        <ion-select-option value="peintre">peintre</ion-select-option>
-        <ion-select-option value="plombier">plombier</ion-select-option>
-        <ion-select-option value="tailleur">tailleur</ion-select-option>
-        <ion-select-option value="tapissier">tapissier</ion-select-option>
+        <ion-select-option value="Software engineer">Software engineer</ion-select-option>
+        <ion-select-option value="Scrum master">Scrum master</ion-select-option>
+        <ion-select-option value="Developer">Developer</ion-select-option>
+        <ion-select-option value="Tech lead">Tech lead</ion-select-option>
+        <ion-select-option value="student">student</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-button expand="block" fill="outline" type="submit">Envoyer</ion-button>

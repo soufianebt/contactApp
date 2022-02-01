@@ -13,6 +13,7 @@ import {ContactAuthService} from '../services/contact-auth.service';
 export class ListeContactsPage implements OnInit {
   contacts: Contact[];
   email: string;
+  localImage= '../../../../assets/profile.png';
 
   constructor(private menuCtrl: MenuController,
               private navCtrl: NavController,
@@ -33,7 +34,11 @@ export class ListeContactsPage implements OnInit {
     });
     console.log(this.contacts);
   }
-   loadContact() {
+  getImage(item): string{
+    console.log(item);
+    return item == null? this.localImage:item;
+  }
+  loadContact() {
     this.firestore.getAllPersonalContact(this?.email).subscribe(data => {
       this.contacts = data.map(e => ({
         nom: e.payload.doc.data().nom,
@@ -43,6 +48,7 @@ export class ListeContactsPage implements OnInit {
         ville: e.payload.doc.data().ville,
         adresse: e.payload.doc.data().adresse,
         service: e.payload.doc.data().service,
+        imageUrl: e.payload.doc.data().imageUrl,
       }));
     });
   }
@@ -50,13 +56,12 @@ export class ListeContactsPage implements OnInit {
     const navigationExtras: NavigationExtras = {
       queryParams: {
         emailContact: email,
-        from:"liste-contacts"
+        from:'liste-contacts'
       }
     };
     this.navCtrl.navigateForward('/detail-contact', navigationExtras);
   }
-
-ajouterContact(){
+  ajouterContact(){
     this.navCtrl.navigateRoot('/ajouter-contact');
   }
 

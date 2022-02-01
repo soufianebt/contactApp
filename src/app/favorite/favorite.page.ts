@@ -14,7 +14,7 @@ export class FavoritePage implements OnInit {
   db: SQLiteObject;
   contacts: Contact[] = [];
   email: string;
-
+  localImage= '../../../../assets/profile.png';
   constructor(private menuCtrl: MenuController,
               private navCtrl: NavController,
               private sqlite: SQLite
@@ -24,6 +24,10 @@ export class FavoritePage implements OnInit {
 
   ngOnInit() {
     this.loadContact();
+  }
+  getImage(item): string{
+    console.log(item);
+    return item == null? this.localImage:item;
   }
   loadContact() {
     this.sqlite.create({
@@ -43,22 +47,14 @@ export class FavoritePage implements OnInit {
                   data.rows.item(i).tel,
                   data.rows.item(i).ville,
                   data.rows.item(i).adresse,
-                  data.rows.item(i).service
+                  data.rows.item(i).service,
+                  data.rows.item(i).imageUrl
               ));
           }}})
           .catch(e => console.log(e));
       })
       .catch(e => console.log(e));
     console.log(this.contacts);
-    // this.contacts = data.map(e => ({
-    //   nom: e.payload.doc.data().nom,
-    //   prenom: e.payload.doc.data().prenom,
-    //   email: e.payload.doc.data().email,
-    //   tel: e.payload.doc.data().tel,
-    //   ville: e.payload.doc.data().ville,
-    //   adresse: e.payload.doc.data().adresse,
-    //   service: e.payload.doc.data().service,
-    // }));
   }
   detailsContact(email){
     const navigationExtras: NavigationExtras = {

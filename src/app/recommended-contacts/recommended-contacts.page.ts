@@ -12,7 +12,7 @@ import {NavigationExtras} from '@angular/router';
 export class RecommendedContactsPage implements OnInit {
   contacts: Contact[];
   email: string;
-
+  localImage= '../../../../assets/profile.png';
   constructor(private menuCtrl: MenuController,
               private navCtrl: NavController,
               private firestore: ContactAcessService) { }
@@ -30,9 +30,14 @@ export class RecommendedContactsPage implements OnInit {
         ville: e.payload.doc.data()['ville'],
         adresse: e.payload.doc.data()['adresse'],
         service: e.payload.doc.data()['service'],
+        imageUrl: e.payload.doc.data()['imageUrl']
       }));
       console.log(this.contacts);
     });
+  }
+  getImage(item): string{
+    console.log(item);
+    return item == null? this.localImage:item;
   }
   detailsContact(email: any) {
     const navigationExtras: NavigationExtras = {

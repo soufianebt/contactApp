@@ -7,26 +7,34 @@
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
- <form [formGroup]= "inscriptionForm" (ngSubmit)="signUp()">
+ <form  (ngSubmit)="signUp()">
+   <ion-item>
+     <ion-label>Contact photo</ion-label>
+     <input type="file" (change)="uploadFile($event)">
+     <div>{{ uploadPercent | async }}</div>
+   </ion-item>
+   <ion-item>
+     <ion-input type="text" [value]="downloadURL | async" hidden  [(ngModel)]="compte.imageUrl" name="imageUrl" disabled="{{true}}" ></ion-input>
+   </ion-item>
   <ion-item>
     <ion-label>Nom</ion-label>
-    <ion-input type="text" formControlName='nom'></ion-input>
+    <ion-input  type="text"  [(ngModel)]="compte.nom" name="nom"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label>Prenom</ion-label>
-    <ion-input type="text" formControlName='prenom'></ion-input>
+    <ion-input type="text"  [(ngModel)]="compte.prenom" name="prenom"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label>Email</ion-label>
-    <ion-input type="email" formControlName='email'></ion-input>
+    <ion-input type="email"  [(ngModel)]="compte.email" name="email"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label>Tel</ion-label>
-    <ion-input type="Tel" formControlName='tel'></ion-input>
+    <ion-input type="Tel" [(ngModel)]="compte.tel" name="tel"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label> Password</ion-label>
-    <ion-input type="Password" formControlName='password'></ion-input>
+    <ion-input type="Password" [(ngModel)]="compte.password" name="password"></ion-input>
   </ion-item>
   <ion-button expand="block" fill="outline" type="submit">Envoyer</ion-button>
  </form>

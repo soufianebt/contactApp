@@ -27,6 +27,8 @@ export class DetailContactPage implements OnInit {
   LocationUrl: string;
   start_icon_type = 'star-outline';
   db: SQLiteObject;
+  deletefav = false;
+  localImage = '../../../../assets/img.JPG';
 
   constructor(private contactservice: ContactAcessService,
               private fireauth: ContactAuthService,
@@ -61,6 +63,8 @@ export class DetailContactPage implements OnInit {
          this.personel();
          this.modified = true;
        }else if(this.from === 'favoris'){
+         this.deletefav = true;
+         this.isButtonsVisible = false;
          this.favori();
        }
    }
@@ -139,6 +143,7 @@ export class DetailContactPage implements OnInit {
   modifier(){
     this.modified = false;
   }
+
   supprimer() {
     this.fireauth.userDetails().subscribe(res => {
       console.log('res', res);
@@ -176,39 +181,36 @@ export class DetailContactPage implements OnInit {
   email() {
     const email = {
       to: this.contact.email, subject: 'Demmand de service',
-      body: 'How are you? Nice greetings from Rabat' ,
+      body: 'Good morning,\n' +
+        'I am interested in your service '+this.contact.service+',\n' +
+        'please contact me so that we can discuss' ,
       isHtml: true
     };
     this.emailComposer.open(email);
   }
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  GPS(): string{
-    this.geolocation.getCurrentPosition().then((resp) => {
-      this.LocationUrl =  resp.coords.latitude.toString() + ',' + resp.coords.longitude.toString();
-      //
-      console.log(this.LocationUrl);
-    }).catch((error) => {
-      console.log('Error getting location', error);
-    });
-    console.log(this.LocationUrl);
-  return 'https://www.google.com/maps/@'+this.LocationUrl;
-  }
+
   // eslint-disable-next-line @typescript-eslint/naming-convention
 
   setSMS() {
     this.sms.send(this.contact.tel, '[Votre message ici!!!]');
   }
-
   sharing() {
-    this.socialSharing.shareViaWhatsAppToReceiver(this.contact.tel,
-      'Hi You can find me \n' + this.GPS(), null).then(() => {
+    this.geolocation.getCurrentPosition().then((resp) => {
+      const localisationCoordinates =  resp.coords.latitude.toString() + ',' + resp.coords.longitude.toString();
+      //
+      this.socialSharing.shareViaWhatsAppToReceiver(this.contact.tel,
+        'Hi You can find me \n  ' +  'https://www.google.com/maps/@'+localisationCoordinates, null).then(() => {
 // Success!
-    }).catch(() => {
+      }).catch(() => {
 // Error!
+      });
+      console.log(this.LocationUrl);
+    }).catch((error) => {
+      console.log('Error getting location', error);
     });
   }
-
   save(){
     this.fireauth.userDetails().subscribe(res => {
       console.log('res', res);
@@ -225,7 +227,6 @@ export class DetailContactPage implements OnInit {
     });
     console.log(this.contact);
   }
-
   ajouterFavori() {
   if(this.start_icon_type == 'start'){
     this.start_icon_type = 'star-outline';
@@ -248,21 +249,25 @@ export class DetailContactPage implements OnInit {
     })
       .then((db: SQLiteObject) => {
         this.db = db;
-        this.db.executeSql('insert into contact(nom, prenom, tel, email, adresse, ville, service) values("'
+        this.db.executeSql('insert into contact(nom, prenom, tel, email, adresse, ville, service, imageUrl) values("'
           +this.contact.nom+'","'
           +this.contact.prenom+'","'
           +this.contact.tel+'","'
           +this.contact.email+'","'
           +this.contact.adresse+'","'
           +this.contact.ville+'","'
-          +this.contact.service+'")',[])
+          +this.contact.service+'","'
+          +this.contact.imageUrl+ '")',[])
           .then(() => console.log('Executed SQL insert'))
           .catch(e => console.log(e));
       })
       .catch(e => console.log(e));
   }
   }
-
+  getImage(item): string{
+    console.log(this.localImage);
+    return item == null? this.localImage:item;
+  }
   favori(){
     this.sqlite.create({
       name: 'data.db',
@@ -271,11 +276,34 @@ export class DetailContactPage implements OnInit {
       .then((db: SQLiteObject) => {
         this.db = db;
         this.db.executeSql('select * from contact where email="'+this.emailContact+'"',[])
-        .then((data) => {this.contact = data.row.item(0);})
+        .then((data) => {this.contact = new Contact(
+          data.rows.item(0).nom,
+          data.rows.item(0).prenom,
+          data.rows.item(0).email,
+          data.rows.item(0).tel,
+          data.rows.item(0).ville,
+          data.rows.item(0).adresse,
+          data.rows.item(0).service,
+          data.rows.item(0).imageUrl
+        );})
           .catch(e => console.log(e));
       })
       .catch(e => console.log(e));
       this.start_icon_type= 'star';
   }
-
+  deleteFavorite(){
+    this.sqlite.create({
+      name: 'data.db',
+      location: 'default'
+    })
+      .then((db: SQLiteObject) => {
+        this.db = db;
+        this.db.executeSql('DELETE from contact where tel="'+this.contact.tel+'"',[])
+          .then(() => {console.log('client' + this.contact.tel +'deleted successfuly');})
+          .catch(e => console.log(e));
+      })
+      .catch(e => console.log(e));
+    this.favori();
+    this.navCtrl.navigateForward('/favorite');
+  }
 }

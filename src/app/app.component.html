@@ -4,6 +4,9 @@
       <ion-content>
         <ion-list id="inbox-list">
           <ion-list-header>Inbox</ion-list-header>
+          <ion-thumbnail slot="start">
+            <ion-img class="clientAvatar" src="{{getImage(compte.imageUrl)}}"></ion-img>
+          </ion-thumbnail>
           <ion-note>{{clientEmail}}</ion-note>
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">

@@ -10,7 +10,7 @@
   <ion-list>
     <ion-item *ngFor="let item of contacts" (click)="detailsContact(item.email)">
       <ion-thumbnail slot="start">
-        <ion-img src="../../../../assets/img.JPG"></ion-img>
+        <ion-img src="{{getImage(item.imageUrl)}}"></ion-img>
       </ion-thumbnail>
       <ion-label>{{item.nom}} {{item.prenom}}</ion-label>
       <ion-label><br>{{item.service}}</ion-label>
