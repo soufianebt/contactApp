@@ -289,6 +289,7 @@ export class DetailContactPage implements OnInit {
           .catch(e => console.log(e));
       })
       .catch(e => console.log(e));
+
       this.start_icon_type= 'star';
   }
   deleteFavorite(){
